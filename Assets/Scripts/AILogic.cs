@@ -13,22 +13,28 @@ public class AILogic : MonoBehaviour
 
     //Self reference
     public RandomWalk randomWalk;
-    private NavMeshAgent _agent;
+    private NavMeshAgent agent;
 
     // Start is called before the first frame update
     void Start()
     {
-        _agent = GetComponent<NavMeshAgent>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (door.state == MoveDoor.DoorStates.Locked && key != null)
+        /*if (door.state == MoveDoor.DoorStates.Locked && key != null)
         {
             _agent.destination = key.position;
+        }*/
+        if (agent.pathPending || !agent.isOnNavMesh || agent.remainingDistance > 0.1f)
+        {
+            return;
         }
+        agent.destination = player.position;
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -37,6 +43,6 @@ public class AILogic : MonoBehaviour
             door.unlockDoor = true;
             Destroy(other.gameObject);
         }
-        
+
     }
 }
