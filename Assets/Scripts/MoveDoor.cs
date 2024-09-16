@@ -49,7 +49,7 @@ public class MoveDoor : MonoBehaviour
                 if (Vector3.Distance(transform.position, _openPosition) < 0.01f)
                 {
                     state = DoorStates.Opened;
-                    _startOfWait = Time.time;
+                    //_startOfWait = Time.time;
                 }
                 break;
             case DoorStates.Closing:
@@ -60,10 +60,10 @@ public class MoveDoor : MonoBehaviour
                 }
                 break;
             case DoorStates.Opened:
-                if (waitTime < Time.time - _startOfWait )
+                /*if (waitTime < Time.time - _startOfWait )
                 {
                     state = DoorStates.Closing;
-                }
+                }*/
                 break;
             case DoorStates.Locked:
                 if (unlockDoor)

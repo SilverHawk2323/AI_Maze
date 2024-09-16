@@ -13,7 +13,10 @@ public class Player : MonoBehaviour
     public float jumpPower;
     public Transform firstPersonCamera;
     public Transform thirdPersonCamera;
+    [SerializeField] private Transform checkpoint;
     private CharacterController cc;
+    public AILogic friend;
+    public bool firstPerson;
 
     public Vector3 moveDirection;
 
@@ -22,6 +25,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         cc = GetComponent<CharacterController>();
+        firstPerson = true;
     }
 
     // Update is called once per frame
@@ -80,6 +84,7 @@ public class Player : MonoBehaviour
     }
     private void Move(Vector3 movement)
     {
+        
         if (currentCameraMode == CameraMode.ThirdPerson)
         {
             /*movement = thirdPersonCamera.transform.TransformDirection(movement);
@@ -89,6 +94,8 @@ public class Player : MonoBehaviour
             sprintSpeed = 0f;
             crouchSpeed = 0f;
             jumpPower = 0f;
+            firstPerson = false;
+            friend.FollowPlayer();
         }
         else    //if we are NOT in third person
         {
@@ -99,6 +106,7 @@ public class Player : MonoBehaviour
             crouchSpeed = 0f;
             gravity = 9.81f;
             jumpPower = 10f;
+            firstPerson = true;
             //take our "global" movement direction, and convert it to a local direction
             movement = transform.TransformDirection(movement);
         }
@@ -111,4 +119,14 @@ public class Player : MonoBehaviour
         currentCameraMode = mode;
     }
 
+    public CameraMode GetCameraMode()
+    {
+        return currentCameraMode;
+    }
+
+    public void Respawn()
+    {
+        //instead of destroying the player the game will just move the player to a checkpoint which is an empty game object.
+        transform.position = checkpoint.transform.position;
+    }
 }

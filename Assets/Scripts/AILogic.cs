@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,9 +8,9 @@ using UnityEngine.AI;
 public class AILogic : MonoBehaviour
 {
     //Reference to other things
-    public Transform key;
-    public MoveDoor door;
-    public Transform player;
+    public GameObject key;
+    
+    public Player player;
 
     //Self reference
     public RandomWalk randomWalk;
@@ -28,11 +29,11 @@ public class AILogic : MonoBehaviour
         {
             _agent.destination = key.position;
         }*/
-        if (agent.pathPending || !agent.isOnNavMesh || agent.remainingDistance > 0.1f)
+        /*if (agent.pathPending || !agent.isOnNavMesh || agent.remainingDistance > 0.1f)
         {
             return;
         }
-        agent.destination = player.position;
+        agent.destination = player.transform.position;*/
     }
 
 
@@ -40,9 +41,19 @@ public class AILogic : MonoBehaviour
     {
         if (key.gameObject == other.gameObject)//other.GetComponent<Key>() != null)
         {
-            door.unlockDoor = true;
-            Destroy(other.gameObject);
+            other.GetComponent<Key>().OpenDoor();
         }
 
+    }
+
+
+
+    public void FollowPlayer()
+    {
+        if (agent.pathPending || !agent.isOnNavMesh || agent.remainingDistance > 1f || player.firstPerson)
+        {
+            return;
+        }
+        agent.destination = player.transform.position;
     }
 }

@@ -9,6 +9,7 @@ public class Key : MonoBehaviour
     public float rotationSpeed = 40f;
     public float frequency = 1f;
     public float magnitude = 1f;
+    public MoveDoor door;
 
     // Start is called before the first frame update
     void Start()
@@ -26,5 +27,11 @@ public class Key : MonoBehaviour
         float yOffset = Mathf.Sin(Time.time * frequency) * magnitude;
 
         transform.position += new Vector3(0, yOffset, 0) * Time.deltaTime;
+    }
+
+    public void OpenDoor()
+    {
+        door.unlockDoor = true;
+        Destroy(gameObject);
     }
 }
