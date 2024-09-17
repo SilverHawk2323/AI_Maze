@@ -39,14 +39,18 @@ public class AILogic : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (key.gameObject == other.gameObject)//other.GetComponent<Key>() != null)
+        Debug.Log("Hit " + other);
+        if (other.GetComponent<Key>())
         {
             other.GetComponent<Key>().OpenDoor();
         }
 
     }
 
-
+    public void Dead()
+    {
+        GameManager.gm.Respawn(gameObject);
+    }
 
     public void FollowPlayer()
     {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 /*
 
@@ -13,20 +14,22 @@ A function called when the object touches a collider from either point A or B th
 
 
 */
-
+enum Waypoints
+{
+    pointA, pointB, currentPoint
+}
+[RequireComponent(typeof(NavMeshAgent))]
 public class MovingObject : MonoBehaviour
 {
     public Transform pointA;
     public Transform pointB;
     public Transform currentPoint;
     public float speed;
+    private NavMeshAgent agent;
 
     public Rigidbody rb;
-
-    enum Waypoints
-    {
-        pointA, pointB, currentPoint
-    }
+    private Waypoints waypoints = Waypoints.pointA;
+    
 
 
     // Start is called before the first frame update
@@ -34,15 +37,26 @@ public class MovingObject : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         currentPoint = pointA;
+        agent = GetComponent<NavMeshAgent>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Movement(currentPoint);
+        switch (waypoints)
+        {
+            case Waypoints.pointA:
+                agent.destination = pointA.position; 
+                break;
+
+            case Waypoints.pointB:
+                agent.destination = pointB.position;
+                break;
+        }
+        
     }
 
-    void Movement(Transform point)
+    /*void Movement(Transform point)
     {
         Vector2 direction = point.position - transform.position;
 
@@ -51,24 +65,21 @@ public class MovingObject : MonoBehaviour
         direction = direction * speed * Time.deltaTime;
 
         transform.position = transform.position + (Vector3)direction;
-    }
+    }*/
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log("Hit something");
-        if (collision.transform.tag == "Waypoint")
-        {
-            if (currentPoint == pointA)
+        
+        
+            if (waypoints == Waypoints.pointB)
             {
-                currentPoint = pointB;
-                Debug.Log("Reached Point A");
+                waypoints = Waypoints.pointA;
             }
             else
             {
-                currentPoint = pointA;
+                waypoints = Waypoints.pointB;
             }
-
-        }
+        
 
     }
 }
