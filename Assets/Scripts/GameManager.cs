@@ -9,13 +9,20 @@ public class GameManager : MonoBehaviour
     public static GameManager gm;
     public Transform checkpoint;
 
-    private void Start()
+    private void Awake()
     {
-        gm = this;
+        if (gm != null)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            gm = this;
+        }
     }
 
     public void Respawn(GameObject gameobject)
     {
-        gameobject.transform.position = checkpoint.position;
+        gameobject.transform.position =  checkpoint.position;
     }
 }

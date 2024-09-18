@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.FilePathAttribute;
 
 public class Kill : MonoBehaviour
 {
@@ -17,7 +18,10 @@ public class Kill : MonoBehaviour
         else if (collision.transform.tag == "Player" && gameObject.transform.tag == "Reaper")
         {
             Debug.Log("Hit Player");
+            CharacterController cc = collision.gameObject.GetComponent<CharacterController>();
+            cc.enabled = false;
             GameManager.gm.Respawn(collision.gameObject);
+            cc.enabled = true;
         }
     }
 }

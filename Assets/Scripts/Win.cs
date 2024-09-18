@@ -8,7 +8,7 @@ public class Win : MonoBehaviour
     public GameObject winUI;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Friend")
+        if (other.tag == "Player")
         {
             winUI.SetActive(true);
         }
