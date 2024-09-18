@@ -769,7 +769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openingDirection: {x: 0, y: -6, z: 0}
   speed: 5
-  unlockDoor: 1
+  unlockDoor: 0
   state: 4
   waitTime: 5
 --- !u!208 &111062083

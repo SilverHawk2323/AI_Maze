@@ -25,15 +25,7 @@ public class AILogic : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if (door.state == MoveDoor.DoorStates.Locked && key != null)
-        {
-            _agent.destination = key.position;
-        }*/
-        /*if (agent.pathPending || !agent.isOnNavMesh || agent.remainingDistance > 0.1f)
-        {
-            return;
-        }
-        agent.destination = player.transform.position;*/
+        
     }
 
 
