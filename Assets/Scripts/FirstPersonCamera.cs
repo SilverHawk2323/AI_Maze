@@ -30,6 +30,10 @@ public class FirstPersonCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.gm.pauseGame)
+        {
+            return;
+        }
         currentRotationHorizontal += Input.GetAxis("Mouse X") * sensitivity;
         //Unity = +ve Y is up. Screen space = -ve Y is up.
         currentRotationVertical -= Input.GetAxis("Mouse Y") * sensitivity;

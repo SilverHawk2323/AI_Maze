@@ -37,6 +37,10 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GameManager.gm.pauseGame)
+        {
+            return;
+        }
         //KeyCode is an enumerator which contains all the keyboard keys
         if (Input.GetKeyDown(KeyCode.V))
         {

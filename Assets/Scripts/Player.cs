@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     private CharacterController cc;
     public AILogic friend;
     public bool firstPerson;
+    public GameObject pauseMenu;
 
     public Vector3 moveDirection;
 
@@ -31,6 +32,11 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (transform.position.y < 0)
+        {
+            Respawn();
+        }
+
         //get inputs for this frame
         input.x = Input.GetAxis("Horizontal");
         input.y = Input.GetAxis("Vertical");
@@ -47,6 +53,29 @@ public class Player : MonoBehaviour
         {
             walkSpeed = 10;
         }*/
+
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P))
+        {
+            if (Time.timeScale > 0f)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                pauseMenu.SetActive(true);
+                Time.timeScale = 0f;
+                GameManager.gm.pauseGame = true;
+            }
+            else
+            {
+                Cursor.lockState= CursorLockMode.Locked;
+                Cursor.visible = false;
+                pauseMenu.SetActive(false);
+                Time.timeScale = 1f;
+                GameManager.gm.pauseGame = false;
+            }
+            
+
+            
+        }
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -87,9 +116,6 @@ public class Player : MonoBehaviour
         
         if (currentCameraMode == CameraMode.ThirdPerson)
         {
-            /*movement = thirdPersonCamera.transform.TransformDirection(movement);
-            Vector3 facingDirection = new Vector3(movement.x, 0, movement.z);
-            transform.forward = facingDirection;*/
             walkSpeed = 0f;
             sprintSpeed = 0f;
             crouchSpeed = 0f;
@@ -97,22 +123,20 @@ public class Player : MonoBehaviour
             firstPerson = false;
             friend.FollowPlayer();
         }
-        else    //if we are NOT in third person
+        else    //if we are NOT in the top down camera
         {
             //match the left-right rotation of the camera
             transform.localEulerAngles = new Vector3(0, firstPersonCamera.localEulerAngles.y, 0);
             walkSpeed = 5f;
             sprintSpeed = 20f;
-            crouchSpeed = 0f;
+            crouchSpeed = 3f;
             gravity = 9.81f;
-            jumpPower = 10f;
+            jumpPower = 5f;
             firstPerson = true;
             //take our "global" movement direction, and convert it to a local direction
             movement = transform.TransformDirection(movement);
         }
         cc.Move(movement *Time.deltaTime);
-        //set our rigidbody's velocity using the incoming movement value
-        //rb.velocity = movement;
     }
     public void SetCamera(CameraMode mode)
     {
@@ -122,6 +146,14 @@ public class Player : MonoBehaviour
     public CameraMode GetCameraMode()
     {
         return currentCameraMode;
+    }
+
+    public void Win()
+    {
+        walkSpeed = 0f;
+        sprintSpeed = 0f;
+        crouchSpeed = 0f;
+        jumpPower = 0f;
     }
 
     public void Respawn()

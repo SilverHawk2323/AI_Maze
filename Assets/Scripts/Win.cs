@@ -11,6 +11,8 @@ public class Win : MonoBehaviour
         if (other.tag == "Player")
         {
             winUI.SetActive(true);
+            GameManager.gm.Win();
+            Debug.Log("You Win!!!");
         }
     }
 }
